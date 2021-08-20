@@ -1,0 +1,19 @@
+.worm {
+  position: relative;
+}
+.airplane {
+  position: relative;
+}
+.squre-one {
+  background-color: red;
+  width: 50px;
+  height: 50px;
+  border: 1px solid green;
+  margin-bottom: 25px;
+}
+.squre-two {
+  background-color: yellow;
+  width: 50px;
+  height: 50px;
+  border: 1px solid green;
+}
