@@ -1,5 +1,5 @@
 "use strict";
-const total = 50;
+const total = 40;
 const text = document.querySelector("#text");
 const worm = document.querySelector(".worm");
 let input = document.querySelector(".input"),
@@ -35,9 +35,10 @@ const animate = ({ timing, draw, duration }) => {
 animate({
   duration: 1000,
   timing(timeFraction) {
-    return timeFraction;
+    return Math.pow(timeFraction, 2);
   },
   draw(progress) {
-    worm.style.transform = `translateX(${progress * (total + 100) - 100}%)`;
+    console.log(progress);
+    worm.style.opacity = progress * 1;
   },
 });
