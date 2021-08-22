@@ -1,8 +1,8 @@
 "use strict";
-const total = 1000;
+const total = 50;
 const text = document.querySelector("#text");
+const worm = document.querySelector(".worm");
 let input = document.querySelector(".input"),
-  worm = document.querySelector(".worm"),
   airplane = document.querySelector(".airplane"),
   buttonStart = document.querySelector(".button-start"),
   buttonReset = document.querySelector(".button-reset"),
@@ -38,6 +38,6 @@ animate({
     return timeFraction;
   },
   draw(progress) {
-    text.textContent = Math.floor(total * progress);
+    worm.style.transform = `translateX(${progress * (total + 100) - 100}%)`;
   },
 });
