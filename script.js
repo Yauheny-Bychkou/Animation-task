@@ -1,7 +1,7 @@
 "use strict";
-
+const total = 1000;
+const text = document.querySelector("#text");
 let input = document.querySelector(".input"),
-  text = document.querySelector("p"),
   worm = document.querySelector(".worm"),
   airplane = document.querySelector(".airplane"),
   buttonStart = document.querySelector(".button-start"),
@@ -10,64 +10,34 @@ let input = document.querySelector(".input"),
   flyAnimate,
   wormDown,
   idInterval,
-  animate,
   count = 0;
 
-flyAnimate = function () {
-  flyInterval = requestAnimationFrame(flyAnimate);
-  count++;
-  if (count < 450) {
-    worm.style.left = count + "px";
-    airplane.style.left = count + "px";
-  } else {
-    cancelAnimationFrame(flyInterval);
-  }
-};
-function debounce(func, wait, immediate) {
-  let timeout;
+const animate = ({ timing, draw, duration }) => {
+  let start = performance.now();
 
-  return function executedFunction() {
-    const context = this;
-    const args = arguments;
-
-    const later = function () {
-      timeout = null;
-      if (!immediate) {
-        func.apply(context, args);
-      }
-    };
-
-    const callNow = immediate && !timeout;
-
-    clearTimeout(timeout);
-
-    timeout = setTimeout(later, wait);
-
-    if (callNow) {
-      func.apply(context, args);
+  requestAnimationFrame(function animate(time) {
+    // timeFraction изменяется от 0 до 1
+    let timeFraction = (time - start) / duration;
+    if (timeFraction > 1) {
+      timeFraction = 1;
     }
-  };
-}
+    // вычисление текущего состояния анимации
+    let progress = timing(timeFraction);
 
-const returnedFunction = debounce(function (e) {
-  let target = e.target;
-  text.textContent = target.value;
-}, 300);
+    draw(progress); // отрисовать её
 
-input.addEventListener("input", returnedFunction);
-window.addEventListener("resize", returnedFunction);
-animate = true;
-buttonStart.addEventListener("click", function () {
-  if (animate) {
-    flyInterval = requestAnimationFrame(flyAnimate);
-    animate = false;
-  } else {
-    animate = true;
-    cancelAnimationFrame(flyInterval);
-  }
-});
-buttonReset.addEventListener("click", function () {
-  count = 0;
-  worm.style.left = count + "px";
-  airplane.style.left = count + "px";
+    if (timeFraction < 1) {
+      requestAnimationFrame(animate);
+    }
+  });
+};
+
+animate({
+  duration: 1000,
+  timing(timeFraction) {
+    return timeFraction;
+  },
+  draw(progress) {
+    text.textContent = Math.floor(total * progress);
+  },
 });
